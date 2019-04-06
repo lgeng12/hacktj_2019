@@ -19,6 +19,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MoneyTreesState extends State<MoneyTrees> {
+  final TextStyle _biggerWhite = const TextStyle(color: Colors.white, fontSize: 20.0);
+  final TextStyle _standardWhite = const TextStyle(color: Colors.white, fontSize: 16.0);
+  final TextStyle _standardBlack = const TextStyle(color: Colors.black, fontSize: 18.0);
+
   PageController _pageController;
   int _page = 0;
 
@@ -52,8 +56,11 @@ class MoneyTreesState extends State<MoneyTrees> {
       appBar: new AppBar(
         title: new Text(
           widget.title,
-          style: new TextStyle(color: Colors.white),
+          style: _biggerWhite,
         ),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.settings), onPressed: _pushSaved),
+        ],
       ),
       body: new PageView(
         children: [
@@ -78,9 +85,7 @@ class MoneyTreesState extends State<MoneyTrees> {
                 ),
                 title: new Text(
                   "Home",
-                  style: new TextStyle(
-                    color: Colors.white,
-                  ),
+                  style: _standardWhite,
                 )),
             new BottomNavigationBarItem(
                 icon: new Icon(
@@ -89,9 +94,7 @@ class MoneyTreesState extends State<MoneyTrees> {
                 ),
                 title: new Text(
                   "Tree",
-                  style: new TextStyle(
-                    color: Colors.white,
-                  ),
+                  style: _standardWhite,
                 )),
             new BottomNavigationBarItem(
                 icon: new Icon(
@@ -100,14 +103,31 @@ class MoneyTreesState extends State<MoneyTrees> {
                 ),
                 title: new Text(
                   "Friends",
-                  style: new TextStyle(
-                    color: Colors.white,
-                  ),
+                  style: _standardWhite,
                 ))
           ],
           onTap: navigationTapped,
           currentIndex: _page,
         ),
+      ),
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return new Scaffold(appBar: new AppBar(
+              title: const Text('Settings'),
+            ),
+            body: new Container(
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: Text('Hello World', style: _standardBlack,),
+            )
+          );
+        }
       ),
     );
   }
