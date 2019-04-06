@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+
+// pages
 import 'package:hacktj_2019/home.dart';
 import 'package:hacktj_2019/tree.dart';
 import 'package:hacktj_2019/friends.dart';
+
+// other stuff
+import 'package:hacktj_2019/friend.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -18,10 +24,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MoneyTreesState extends State<MoneyTrees> {
+class _MoneyTreesState extends State<MoneyTrees> {
   final TextStyle _biggerWhite = const TextStyle(color: Colors.white, fontSize: 20.0);
   final TextStyle _standardWhite = const TextStyle(color: Colors.white, fontSize: 16.0);
   final TextStyle _standardBlack = const TextStyle(color: Colors.black, fontSize: 18.0);
+  final TextStyle _headerGreen = const TextStyle(color: Colors.greenAccent, fontSize: 20.0);
+
+  final Set<Friend> _friends = new Set<Friend>();
 
   PageController _pageController;
   int _page = 0;
@@ -66,7 +75,7 @@ class MoneyTreesState extends State<MoneyTrees> {
         children: [
           new Home("Home screen"),
           new Tree("Tree screen"),
-          new Friends("Friends screen"),
+          new FriendsPage(),
         ],
         onPageChanged: onPageChanged,
         controller: _pageController,
@@ -124,7 +133,7 @@ class MoneyTreesState extends State<MoneyTrees> {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               alignment: Alignment.center,
-              child: Text('Hello World', style: _standardBlack,),
+              child: Text('Hello World', style: _headerGreen,),
             )
           );
         }
@@ -137,5 +146,5 @@ class MoneyTrees extends StatefulWidget {
   MoneyTrees({Key key, this.title}) : super(key: key);
   final String title;
   @override
-  MoneyTreesState createState() => new MoneyTreesState();
+  _MoneyTreesState createState() => new _MoneyTreesState();
 }
