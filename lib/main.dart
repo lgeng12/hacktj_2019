@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:nima/nima_actor.dart';
 
 import 'dart:math';
 import 'dart:convert';
@@ -11,6 +13,7 @@ import 'dart:async';
 import 'package:hacktj_2019/home.dart';
 import 'package:hacktj_2019/tree.dart';
 import 'package:hacktj_2019/friends.dart';
+import 'package:hacktj_2019/myinfo.dart';
 
 // other stuff
 import 'package:hacktj_2019/friend.dart';
@@ -55,7 +58,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
     // Animating to the page.
     // You can use whatever duration and curve you like
     _pageController.animateToPage(page,
-        duration: const Duration(milliseconds: 200), curve: Curves.ease);
+        duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   void onPageChanged(int page) {
@@ -145,8 +148,12 @@ class _MoneyTreesState extends State<MoneyTrees> {
                   child: Text('Clear Friends', style: _standardBlack),
                 ),
                 FlatButton(
-                  onPressed: () { _ResetMyJson(); },
+                  onPressed: () { _clearMyJson(); },
                   child: Text('Reset Data', style: _standardBlack),
+                ),
+                FlatButton(
+                  onPressed: () { _nextDay(); },
+                  child: Text('New Day', style: _standardBlack),
                 ),
               ]),
             )
@@ -161,10 +168,63 @@ class _MoneyTreesState extends State<MoneyTrees> {
     await file.writeAsString("", flush: true);
   }
 
-  void _ResetMyJson() async {
+  void _clearMyJson() async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/mydata.json');
     await file.writeAsString("", flush: true);
+  }
+
+  void _nextDay() async {
+    String read = await readJson();
+    // print("NEXT DAY READ: $read");
+    MyInfo newInfo = _parseJson(read)[0];
+    // update condition
+    // print("AMOUNT SPENT: ${newInfo.amountSpent}");
+    // print("MAX ALLOWANCE: ${newInfo.maxAllowance}");
+    newInfo.amountSpent ??= 0.0;
+    if (newInfo.amountSpent <= newInfo.maxAllowance) {
+      if (newInfo.treeCondition < 4)
+        newInfo.treeCondition += 1;
+    }
+    else if (newInfo.treeCondition > 0)
+      newInfo.treeCondition -= 1;
+
+    // update numTrees
+    newInfo.numTrees = newInfo.balance.round() + 1;
+    newInfo.amountSpent = 0.0;
+    writeJson(json.encode(newInfo));
+  }
+  // take in json string, return list of my info
+  List<MyInfo> _parseJson(String response) {
+    if (response == null) {
+      return [];
+    }
+    // print("json home decode: ");
+    // print(json.decode(response.toString()));
+    final parsed = json.decode('[${response.toString()}]').cast<
+        Map<String, dynamic>>();
+    return parsed.map<MyInfo>((json) => new MyInfo.fromJson(json)).toList();
+  }
+
+  // return a future string read from json file
+  Future<String> readJson() async {
+    String text;
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/mydata.json');
+      text = await file.readAsString();
+    } catch (e) {
+      print("Couldn't read file");
+    }
+    return text;
+  }
+
+  // write text to json, replaces everything
+  void writeJson(String text) async {
+    // print('Trying to write: ${text}');
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/mydata.json');
+    await file.writeAsString(text);
   }
 }
 

@@ -16,7 +16,6 @@ class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
   final String title;
-  final oneSecond = Duration(seconds: 1);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -24,12 +23,13 @@ class Home extends StatefulWidget {
 
 class _MyHomePageState extends State<Home> {
   double _counter;
-  var date = new DateTime.now();
+  final oneSecond = Duration(seconds: 1);
+  final oneTenth = Duration(milliseconds: 100);
 
   void _changeCounter(num) {
     setState(() {
       _counter -= num;
-      _updateBalanceToJson(_counter);
+      _updateBalanceToJson();
     });
   }
 
@@ -39,22 +39,19 @@ class _MyHomePageState extends State<Home> {
     read.then((value) => _checkJson(value));
 
     if (_counter == null) {
-      print('Re-initializing counter');
+      print('Trying to update counter');
       _updateFromJson();
     }
 
     print('Value of counter: ${_counter}');
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-                'balance is \$' + '$_counter',
+                'Balance is \$' + '$_counter',
                 style: new TextStyle(
                   fontFamily: "Montserrat", fontSize: 40.0,
                 )
@@ -86,17 +83,16 @@ class _MyHomePageState extends State<Home> {
         name: "John",
         balance: 30,
         maxAllowance: 15,
-        amountSpent: 0,
+        amountSpent: 0.0,
         treeCondition: 3,
         numTrees: 5,
     )));
     _counter = 30;
   }
 
-  void _updateBalanceToJson(double balance) {
-    _counter = balance;
-    Future<String> read = readJson();
-    read.then((value) => _writeInfoToJson(balance, value));
+  void _updateBalanceToJson() async {
+    String read = await readJson();
+    _writeInfoToJson(_counter, read);
   }
 
   void _writeInfoToJson(double balance, String fromFile) {  // angery
@@ -105,13 +101,11 @@ class _MyHomePageState extends State<Home> {
     writeJson(json.encode(oldInfo));
   }
 
-  void _updateFromJson() {
-    Future<String> read = readJson();
-    read.then((value) {
-      MyInfo currentInfo = _parseJson(value)[0];
-      setState() {
-        _counter = currentInfo.balance;
-      }
+  void _updateFromJson() async {
+    String read = await readJson();
+    MyInfo currentInfo = _parseJson(read)[0];
+    setState(() {
+      _counter = currentInfo.balance;
     });
   }
   // take in json string, return list of my info
@@ -119,8 +113,6 @@ class _MyHomePageState extends State<Home> {
     if (response == null) {
       return [];
     }
-    // print("json home decode: ");
-    // print(json.decode(response.toString()));
     final parsed = json.decode('[${response.toString()}]').cast<
         Map<String, dynamic>>();
     return parsed.map<MyInfo>((json) => new MyInfo.fromJson(json)).toList();
@@ -164,6 +156,7 @@ class OverlapSquareState extends State<OverlapSquare> {
   var asset = "assets/tree.nima";
 
   void check(num) {
+    num ??= 0;
     if (num < 0) {
       setState(() {
         asset = "assets/dyingtree.nima";
@@ -230,7 +223,7 @@ class AddBalance extends StatelessWidget {
       style: new TextStyle(
         fontFamily: "Poppins",
       ),
-      onSubmitted : (input) {this.parent._changeCounter(double.tryParse(input));controllerT.clear();},
+      onSubmitted : (input) {this.parent._changeCounter(double.tryParse(input)); controllerT.clear();},
     );
   }
 }
