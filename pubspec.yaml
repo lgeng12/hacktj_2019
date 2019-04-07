@@ -58,7 +58,10 @@ flutter:
     - assets/dyingtree2.png
     - assets/dying.flr
     - assets/tree.flr
-
+    - assets/dead1.flr
+    - assets/healthy1.flr
+    - assets/stump1.flr
+    - unhealthy1.flr
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

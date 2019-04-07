@@ -21,8 +21,29 @@ class Tree extends StatefulWidget {
 }
 
 class _MyTreePageState extends State<Tree> {
-  var asset = "assets/tree.nima";
+  var asset = "assets/healthy1.flr";
   MyInfo currentData;
+
+  String condition(){
+    int treeCondition = currentData.treeCondition;
+    String root = "assets/";
+    if (treeCondition == 1){
+      root += 'stump';
+    }
+    if (treeCondition == 2){
+      root += 'dead';
+    }
+    if (treeCondition == 3){
+      root += 'unhealthy';
+    }
+    if (treeCondition == 4){
+      root += 'healthy';
+    }
+    root += '1.flr';
+    asset = root;
+    return root;
+
+  }
 
   @override
 
@@ -48,7 +69,7 @@ class _MyTreePageState extends State<Tree> {
                   maxHeight: 300,
                   maxWidth: 300,
                   child: Center(
-                    child: NimaActor(this.asset, alignment:Alignment.center, fit:BoxFit.contain, animation:"Idle"),
+                    child: FlareActor(this.asset, alignment:Alignment.center, fit:BoxFit.cover, animation: 'Untitled'),
                   ),
                 ),
               ),
