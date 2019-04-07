@@ -71,12 +71,12 @@ class _FriendsPageState extends State<FriendsPage> {
       title: new Text(
         f.name,
       ),
+      onTap: () { _pushToView(f); },
     );
   }
 
   void _addFriend(String n, int tc, int nt) {
     if (_friendNames.contains(n)) {
-      clearJson();
       return;
     }
     Friend f = Friend(
@@ -104,9 +104,6 @@ class _FriendsPageState extends State<FriendsPage> {
                   child: new Column(children: <Widget>[
                     new TextField(
                         decoration: new InputDecoration(
-                          // counterText: "100",
-                          // filled: true,
-                          // fillColor: Colors.grey[300],
                             hintText: 'Name'),
                         autofocus: true,
                         controller: friendController,
@@ -124,8 +121,28 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
-  void _pushToView() {
-
+  void _pushToView(Friend f) {
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+          builder: (BuildContext context) {
+            return new Scaffold(appBar: new AppBar(
+              title: const Text('Your Friend\'s tree'),
+            ),
+                body: new Container(
+                  margin: const EdgeInsets.all(10.0),
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: new Column(children: <Widget>[
+                    Text("Friend: ${f.name}"),
+                    Text("Tree Condition: ${f.treeCondition}"),
+                    Text("Number of Trees: ${f.numTrees}"),
+                  ],
+                  ),
+                )
+            );
+          }
+      ),
+    );
   }
 
   void _pushToRefresh() {

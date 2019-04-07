@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:path_provider/path_provider.dart';
+
+import 'dart:math';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
 
 // pages
 import 'package:hacktj_2019/home.dart';
@@ -67,7 +73,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
           style: _biggerWhite,
         ),
         actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.settings), onPressed: _pushSaved),
+          new IconButton(icon: const Icon(Icons.settings), onPressed: _pushToSettings),
         ],
       ),
       body: new PageView(
@@ -121,7 +127,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
     );
   }
 
-  void _pushSaved() {
+  void _pushToSettings() {
     Navigator.of(context).push(
       new MaterialPageRoute<void>(
         builder: (BuildContext context) {
@@ -132,12 +138,23 @@ class _MoneyTreesState extends State<MoneyTrees> {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               alignment: Alignment.center,
-              child: Text('Hello World', style: _headerGreen,),
+              child: new Column(children: <Widget> [
+                Text('Settings', style: _headerGreen,),
+                FlatButton(
+                  onPressed: () { _clearJson(); },
+                  child: Text('Clear Friends', style: _standardBlack),
+                ),
+              ]),
             )
           );
         }
       ),
     );
+  }
+  void _clearJson() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/friends.json');
+    await file.writeAsString("", flush: true);
   }
 }
 
