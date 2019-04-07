@@ -107,7 +107,7 @@ class _FriendsPageState extends State<FriendsPage> {
                           autofocus: true,
                           controller: friendController,
                           onSubmitted: (input) {
-                            _addFriend(input, rng.nextInt(5), rng.nextInt(20));
+                            _addFriend(input, rng.nextInt(4), rng.nextInt(20));
                             friendController.clear();
                           }
                       ),
@@ -194,7 +194,6 @@ class _FriendsPageState extends State<FriendsPage> {
   }
 
   void updateJson() {
-    // print(json.encode(_friends));
     writeJson(json.encode(_friends));
   }
 

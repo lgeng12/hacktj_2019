@@ -10,7 +10,6 @@ class MyInfo {
   MyInfo({this.name, this.balance, this.maxAllowance, this.amountSpent, this.treeCondition, this.numTrees});
 
   factory MyInfo.fromJson(Map<String, dynamic> json) {
-    print("JSON CHECK: ${json['amountSpent']}");
     return new MyInfo(
       name: json['name'],
       balance: json['balance'],

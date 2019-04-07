@@ -61,7 +61,6 @@ class _MyTreePageState extends State<Tree> {
   void updateCurrentData() async {
     String read = await readJson();
     currentData = _parseJson(read)[0];
-    print("TREE AMOUNT SPENT: ${currentData.amountSpent}");
     currentData.amountSpent ??= 0.0;  // angery
   }
 
@@ -70,10 +69,8 @@ class _MyTreePageState extends State<Tree> {
     if (response == null) {
       return [];
     }
-    print("TREE TEXT 2: ${response}");
     final parsed = json.decode('[${response.toString()}]').cast<
         Map<String, dynamic>>();
-    print("TREE TEXT 3: ${parsed}");
     return parsed.map<MyInfo>((json) => new MyInfo.fromJson(json)).toList();
   }
 
@@ -84,7 +81,6 @@ class _MyTreePageState extends State<Tree> {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/mydata.json');
       text = await file.readAsString();
-      print("TREE TEXT: ${text}");
     } catch (e) {
       print("Couldn't read file");
     }

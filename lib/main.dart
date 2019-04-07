@@ -183,7 +183,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
     // print("MAX ALLOWANCE: ${newInfo.maxAllowance}");
     newInfo.amountSpent ??= 0.0;
     if (newInfo.amountSpent <= newInfo.maxAllowance) {
-      if (newInfo.treeCondition < 4)
+      if (newInfo.treeCondition < 3)
         newInfo.treeCondition += 1;
     }
     else if (newInfo.treeCondition > 0)

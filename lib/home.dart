@@ -84,7 +84,7 @@ class _MyHomePageState extends State<Home> {
         balance: 30,
         maxAllowance: 30,
         amountSpent: 0,
-        treeCondition: 3,
+        treeCondition: 1,
         numTrees: 5,
     )));
     _counter = 30;
