@@ -82,8 +82,8 @@ class _MyHomePageState extends State<Home> {
     writeJson(json.encode(new MyInfo(
         name: "John",
         balance: 30,
-        maxAllowance: 15,
-        amountSpent: 10.0,
+        maxAllowance: 30,
+        amountSpent: 0,
         treeCondition: 3,
         numTrees: 5,
     )));
