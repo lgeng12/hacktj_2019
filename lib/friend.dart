@@ -1,10 +1,15 @@
 class Friend {
   String name;
-  int treeLevel;
+  int treeCondition;
   int numTrees;
-  Friend(String n, int tl, int nt) {
-    name = n;
-    treeLevel = tl;
-    numTrees = nt;
+
+  Friend({this.name, this.treeCondition, this.numTrees});
+
+  factory Friend.fromJson(Map<String, dynamic> json) {
+    return new Friend(
+      name: json['name'] as String,
+      treeCondition: json['treeCondition'] as int,
+      numTrees: json['numTrees'] as int,
+    );
   }
 }

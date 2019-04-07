@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 // pages
 import 'package:hacktj_2019/home.dart';
@@ -29,8 +30,6 @@ class _MoneyTreesState extends State<MoneyTrees> {
   final TextStyle _standardWhite = const TextStyle(color: Colors.white, fontSize: 16.0);
   final TextStyle _standardBlack = const TextStyle(color: Colors.black, fontSize: 18.0);
   final TextStyle _headerGreen = const TextStyle(color: Colors.greenAccent, fontSize: 20.0);
-
-  final Set<Friend> _friends = new Set<Friend>();
 
   PageController _pageController;
   int _page = 0;
