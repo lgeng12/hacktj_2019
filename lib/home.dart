@@ -2,37 +2,49 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:nima/nima_actor.dart';
+
+import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
+
+import 'package:hacktj_2019/myinfo.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
   final String title;
+  final oneSecond = Duration(seconds: 1);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<Home> {
-  double _counter = 30;
+  double _counter;
   var date = new DateTime.now();
 
-  void _incrementCounter() {
+  void _changeCounter(num) {
     setState(() {
-      _counter--;
-    });
-  }
-  double _getCount() {
-    return this._counter;
-  }
-  void _ChangeCounter(num) {
-    setState(() {
-      _counter-=num;
+      _counter -= num;
+      _updateBalanceToJson(_counter);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<String> read = readJson();
+    read.then((value) => _checkJson(value));
+
+    if (_counter == null) {
+      print('Re-initializing counter');
+      _updateFromJson();
+    }
+
+    print('Value of counter: ${_counter}');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -54,6 +66,85 @@ class _MyHomePageState extends State<Home> {
         ),
       ),
     );
+  }
+
+  // json contents -> initialize if necessary
+  void _checkJson(String fromFile) {
+    print('from file: $fromFile');
+    if (fromFile.length == 0) {  // nonexistent idk
+      _initializeBalance();
+    }
+    else {
+      MyInfo currentInfo = _parseJson(fromFile)[0];
+      _counter = currentInfo.balance;
+    }
+  }
+
+  // to default values
+  void _initializeBalance() {
+    writeJson(json.encode(new MyInfo(
+        name: "John",
+        balance: 30,
+        maxAllowance: 15,
+        amountSpent: 0,
+        treeCondition: 3,
+        numTrees: 5,
+    )));
+    _counter = 30;
+  }
+
+  void _updateBalanceToJson(double balance) {
+    _counter = balance;
+    Future<String> read = readJson();
+    read.then((value) => _writeInfoToJson(balance, value));
+  }
+
+  void _writeInfoToJson(double balance, String fromFile) {  // angery
+    MyInfo oldInfo = _parseJson(fromFile)[0];
+    oldInfo.balance = balance;
+    writeJson(json.encode(oldInfo));
+  }
+
+  void _updateFromJson() {
+    Future<String> read = readJson();
+    read.then((value) {
+      MyInfo currentInfo = _parseJson(value)[0];
+      setState() {
+        _counter = currentInfo.balance;
+      }
+    });
+  }
+  // take in json string, return list of my info
+  List<MyInfo> _parseJson(String response) {
+    if (response == null) {
+      return [];
+    }
+    // print("json home decode: ");
+    // print(json.decode(response.toString()));
+    final parsed = json.decode('[${response.toString()}]').cast<
+        Map<String, dynamic>>();
+    return parsed.map<MyInfo>((json) => new MyInfo.fromJson(json)).toList();
+  }
+
+  // return a future string read from json file
+  Future<String> readJson() async {
+    String text;
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/mydata.json');
+      text = await file.readAsString();
+    } catch (e) {
+      print("Couldn't read file");
+    }
+    return text;
+  }
+
+  // write text to json, replaces everything
+  void writeJson(String text) async {
+    // print('Trying to write: ${text}');
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/mydata.json');
+    await file.writeAsString(text);
   }
 }
 
@@ -87,8 +178,8 @@ class OverlapSquareState extends State<OverlapSquare> {
 
   @override
   Widget build(BuildContext context) {
+
     check(widget.counter);
-    print(this.asset);
 
     return Container(
       height: 125,
@@ -139,7 +230,7 @@ class AddBalance extends StatelessWidget {
       style: new TextStyle(
         fontFamily: "Poppins",
       ),
-      onSubmitted : (input) {this.parent._ChangeCounter(double.tryParse(input));controllerT.clear();},
+      onSubmitted : (input) {this.parent._changeCounter(double.tryParse(input));controllerT.clear();},
     );
   }
 }

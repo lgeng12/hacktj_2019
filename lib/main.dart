@@ -141,8 +141,12 @@ class _MoneyTreesState extends State<MoneyTrees> {
               child: new Column(children: <Widget> [
                 Text('Settings', style: _headerGreen,),
                 FlatButton(
-                  onPressed: () { _clearJson(); },
+                  onPressed: () { _clearFriendJson(); },
                   child: Text('Clear Friends', style: _standardBlack),
+                ),
+                FlatButton(
+                  onPressed: () { _ResetMyJson(); },
+                  child: Text('Reset Data', style: _standardBlack),
                 ),
               ]),
             )
@@ -151,9 +155,15 @@ class _MoneyTreesState extends State<MoneyTrees> {
       ),
     );
   }
-  void _clearJson() async {
+  void _clearFriendJson() async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/friends.json');
+    await file.writeAsString("", flush: true);
+  }
+
+  void _ResetMyJson() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/mydata.json');
     await file.writeAsString("", flush: true);
   }
 }

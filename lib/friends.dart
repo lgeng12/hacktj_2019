@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:nima/nima_actor.dart';
 
@@ -88,8 +89,6 @@ class _FriendsPageState extends State<FriendsPage> {
     _friends.add(f);
     _friendNames.add(n);
     updateJson();
-
-    Map<String, dynamic> content = new Map();
   }
 
   void _pushToAdd() {
@@ -179,8 +178,12 @@ class _FriendsPageState extends State<FriendsPage> {
     if (response == null) {
       return [];
     }
+    print("json friend decode: ");
+    print(json.decode(response.toString()));
     final parsed = json.decode(response.toString()).cast<
         Map<String, dynamic>>();
+    print("friend parsed: ");
+    print(parsed);
     return parsed.map<Friend>((json) => new Friend.fromJson(json)).toList();
   }
 
@@ -201,17 +204,11 @@ class _FriendsPageState extends State<FriendsPage> {
     writeJson(json.encode(_friends));
   }
 
+
+
   void writeJson(String text) async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/friends.json');
     await file.writeAsString(text);
-    Future<String> r = readJson();
-    r.then((value) => print(value));
-  }
-
-  void clearJson() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/friends.json');
-    await file.writeAsString("", flush: true);
   }
 }

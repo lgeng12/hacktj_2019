@@ -9,7 +9,7 @@ class Friend {
   factory Friend.fromJson(Map<String, dynamic> json) {
     return new Friend(
       name: json['name'],
-      treeCondition: json['treeCondition'],  // idk why but necessary
+      treeCondition: json['treeCondition'],
       numTrees: json['numTrees'],
     );
   }
