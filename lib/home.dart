@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
-import 'package:hacktj_2019/myinfo.dart';
+import 'myinfo.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -29,7 +29,7 @@ class _MyHomePageState extends State<Home> {
   void _changeCounter(num) {
     setState(() {
       _counter -= num;
-      _updateBalanceToJson();
+      _updateBalanceToJson(num);
     });
   }
 
@@ -83,21 +83,23 @@ class _MyHomePageState extends State<Home> {
         name: "John",
         balance: 30,
         maxAllowance: 15,
-        amountSpent: 0.0,
+        amountSpent: 10.0,
         treeCondition: 3,
         numTrees: 5,
     )));
     _counter = 30;
   }
 
-  void _updateBalanceToJson() async {
+  void _updateBalanceToJson(double change) async {
     String read = await readJson();
-    _writeInfoToJson(_counter, read);
+    _writeInfoToJson(_counter, change, read);
   }
 
-  void _writeInfoToJson(double balance, String fromFile) {  // angery
+  void _writeInfoToJson(double balance, double change, String fromFile) {  // angery
     MyInfo oldInfo = _parseJson(fromFile)[0];
     oldInfo.balance = balance;
+    oldInfo.amountSpent ??= 0.0;
+    oldInfo.amountSpent += change;
     writeJson(json.encode(oldInfo));
   }
 

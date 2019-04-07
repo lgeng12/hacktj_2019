@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
-import 'package:hacktj_2019/friend.dart';
+import 'friend.dart';
 
 // currently unused
 enum TreeCondition {
@@ -39,6 +39,7 @@ class _FriendsPageState extends State<FriendsPage> {
   @override
   // friend list page
   Widget build(BuildContext context) {
+    updateFriendList();
     return new Scaffold (
       body: _buildFriendsList(),
       floatingActionButton: FloatingActionButton(
@@ -51,10 +52,6 @@ class _FriendsPageState extends State<FriendsPage> {
 
   // friend list
   Widget _buildFriendsList() {
-    // TEMP
-    Future<String> read = readJson();
-    read.then((value) => updateFriendList(value));
-
     return new ListView(
       padding: const EdgeInsets.all(16.0),
       children: _buildColumn(),
@@ -163,8 +160,9 @@ class _FriendsPageState extends State<FriendsPage> {
 
   }
 
-  void updateFriendList(String response) {
-    List<Friend> friendsToAdd = _parseJson(response);
+  void updateFriendList() async {
+    String read = await readJson();
+    List<Friend> friendsToAdd = _parseJson(read);
     for(Friend f in friendsToAdd) {
       if (_friendNames.contains(f.name)) {
         continue;
@@ -178,12 +176,8 @@ class _FriendsPageState extends State<FriendsPage> {
     if (response == null) {
       return [];
     }
-    print("json friend decode: ");
-    print(json.decode(response.toString()));
     final parsed = json.decode(response.toString()).cast<
         Map<String, dynamic>>();
-    print("friend parsed: ");
-    print(parsed);
     return parsed.map<Friend>((json) => new Friend.fromJson(json)).toList();
   }
 
@@ -203,8 +197,6 @@ class _FriendsPageState extends State<FriendsPage> {
     // print(json.encode(_friends));
     writeJson(json.encode(_friends));
   }
-
-
 
   void writeJson(String text) async {
     final directory = await getApplicationDocumentsDirectory();

@@ -10,10 +10,10 @@ import 'dart:io';
 import 'dart:async';
 
 // pages
-import 'package:hacktj_2019/home.dart';
-import 'package:hacktj_2019/tree.dart';
-import 'package:hacktj_2019/friends.dart';
-import 'package:hacktj_2019/myinfo.dart';
+import 'home.dart';
+import 'tree.dart';
+import 'friends.dart';
+import 'myinfo.dart';
 
 // other stuff
 import 'package:hacktj_2019/friend.dart';
