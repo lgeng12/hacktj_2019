@@ -190,7 +190,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
       newInfo.treeCondition -= 1;
 
     // update numTrees
-    newInfo.numTrees = newInfo.balance ~/ 100 + 1;
+    newInfo.numTrees += newInfo.balance ~/ 10;
     newInfo.amountSpent = 0.0;
     newInfo.balance = 30;
     writeJson(json.encode(newInfo));
