@@ -61,7 +61,19 @@ flutter:
     - assets/dead1.flr
     - assets/healthy1.flr
     - assets/stump1.flr
-    - unhealthy1.flr
+    - assets/unhealthy1.flr
+    - assets/dead2.flr
+    - assets/healthy2.flr
+    - assets/stump2.flr
+    - assets/unhealthy2.flr
+    - assets/dead3.flr
+    - assets/healthy3.flr
+    - assets/stump3.flr
+    - assets/unhealthy3.flr
+    - assets/dead4.flr
+    - assets/healthy4.flr
+    - assets/stump4.flr
+    - assets/unhealthy4.flr
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

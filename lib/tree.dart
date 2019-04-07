@@ -26,29 +26,42 @@ class _MyTreePageState extends State<Tree> {
 
   String condition(){
     int treeCondition = currentData.treeCondition;
+    int numTrees = currentData.numTrees;
     String root = "assets/";
-    if (treeCondition == 1){
+    if (treeCondition == 0){
       root += 'stump';
     }
-    if (treeCondition == 2){
+    if (treeCondition == 1){
       root += 'dead';
     }
-    if (treeCondition == 3){
+    if (treeCondition == 2){
       root += 'unhealthy';
     }
-    if (treeCondition == 4){
+    if (treeCondition == 3){
       root += 'healthy';
     }
-    root += '1.flr';
+    if (numTrees <= 1){
+      root += '1';
+    }
+    else if (numTrees <= 5){
+      root += '2';
+    }
+    else if (numTrees <= 10){
+      root += '3';
+    }
+    else if (numTrees <= 15){
+      root += '4';
+    }
+    root += '.flr';
     asset = root;
     return root;
-
   }
 
   @override
 
   Widget build(BuildContext context) {
     updateCurrentData();
+    asset = condition();
 
     return new Scaffold(
       body: new Column(
