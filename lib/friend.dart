@@ -1,3 +1,4 @@
+
 class Friend {
   String name;
   int treeCondition;
@@ -7,9 +8,17 @@ class Friend {
 
   factory Friend.fromJson(Map<String, dynamic> json) {
     return new Friend(
-      name: json['name'] as String,
-      treeCondition: json['treeCondition'] as int,
-      numTrees: json['numTrees'] as int,
+      name: json['name'],
+      treeCondition: json['treeCondition'],  // idk why but necessary
+      numTrees: json['numTrees'],
     );
+  }
+
+  toJson() {
+    return {
+      'name': name,
+      'treeCondition': treeCondition,
+      'numTrees': numTrees,
+    };
   }
 }
