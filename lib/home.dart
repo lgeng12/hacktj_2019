@@ -153,19 +153,20 @@ class OverlapSquare extends StatefulWidget{
 
 class OverlapSquareState extends State<OverlapSquare> {
   OverlapSquareState(number);
+  String _animationName = "Active";
   bool died = false;
-  var asset = "assets/tree.nima";
+  var asset = "assets/tree.flr";
 
   void check(num) {
     num ??= 0;
     if (num < 0) {
       setState(() {
-        asset = "assets/dyingtree.nima";
+        asset = "assets/dying.flr";
       });
     }
-    if (asset == "assets/dyingtree.nima" && num > 0) {
+    if (asset == "assets/dying.flr" && num > 0) {
       setState(() {
-        asset = "assets/tree.nima";
+        asset = "assets/tree.flr";
       });
     }
   }
@@ -176,7 +177,7 @@ class OverlapSquareState extends State<OverlapSquare> {
     check(widget.counter);
 
     return Container(
-      height: 125,
+      height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.green,
@@ -184,11 +185,11 @@ class OverlapSquareState extends State<OverlapSquare> {
       child: ClipRect(
         clipBehavior: Clip.hardEdge,
         child: OverflowBox(
-          maxHeight: 125,
-          maxWidth: 125,
+          maxHeight: 100,
+          maxWidth: 100,
           child: Center(
             child: Container(
-              child: NimaActor(this.asset, alignment:Alignment.center, fit:BoxFit.contain,mixSeconds: 0.5, animation:"Idle"),
+              child: FlareActor(this.asset, alignment:Alignment.center, fit:BoxFit.cover, animation: _animationName),
               decoration: BoxDecoration(
                 color: Colors.green[50],
                 shape: BoxShape.circle,
