@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:nima/nima_actor.dart';
 
 import 'dart:math';
 import 'dart:convert';
@@ -28,6 +29,8 @@ class FriendsPage extends StatefulWidget {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
+  var asset = "assets/tree.nima";
+
   final List<Friend> _friends = new List<Friend>();
   final Set<String> _friendNames = new Set<String>(); // avoid duplicates, bad
   var rng = new Random();
@@ -102,17 +105,17 @@ class _FriendsPageState extends State<FriendsPage> {
                   color: Colors.white,
                   alignment: Alignment.center,
                   child: new Column(children: <Widget>[
-                    new TextField(
-                        decoration: new InputDecoration(
-                            hintText: 'Name'),
-                        autofocus: true,
-                        controller: friendController,
-                        onSubmitted: (input) {
-                          _addFriend(input, rng.nextInt(5), rng.nextInt(20));
-                          friendController.clear();
-                        }
-                    ),
-                  ],
+                      new TextField(
+                          decoration: new InputDecoration(
+                              hintText: 'Name'),
+                          autofocus: true,
+                          controller: friendController,
+                          onSubmitted: (input) {
+                            _addFriend(input, rng.nextInt(5), rng.nextInt(20));
+                            friendController.clear();
+                          }
+                      ),
+                    ],
                   ),
                 )
             );
@@ -128,17 +131,29 @@ class _FriendsPageState extends State<FriendsPage> {
             return new Scaffold(appBar: new AppBar(
               title: const Text('Your Friend\'s tree'),
             ),
-                body: new Container(
-                  margin: const EdgeInsets.all(10.0),
-                  color: Colors.white,
-                  alignment: Alignment.center,
-                  child: new Column(children: <Widget>[
-                    Text("Friend: ${f.name}"),
-                    Text("Tree Condition: ${f.treeCondition}"),
-                    Text("Number of Trees: ${f.numTrees}"),
-                  ],
-                  ),
-                )
+            body: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                Text("Name: ${f.name}"),
+                Text("Tree Condition: ${f.treeCondition}"),
+                Text("Number of Trees: ${f.numTrees}"),
+                Text(""),  // spacing?
+                Text(""),  // spacing?
+                Container(
+                    height: 300,
+                    child: ClipRect(
+                      clipBehavior: Clip.hardEdge,
+                      child: OverflowBox(
+                        maxHeight: 300,
+                        maxWidth: 300,
+                        child: Center(
+                          child: NimaActor(this.asset, alignment:Alignment.center, fit:BoxFit.contain, animation:"Idle"),
+                        ),
+                      ),
+                    ),
+                ),
+                ]
+            ),
             );
           }
       ),
