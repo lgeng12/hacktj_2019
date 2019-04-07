@@ -108,6 +108,7 @@ class _MyHomePageState extends State<Home> {
       _counter = currentInfo.balance;
     });
   }
+
   // take in json string, return list of my info
   List<MyInfo> _parseJson(String response) {
     if (response == null) {

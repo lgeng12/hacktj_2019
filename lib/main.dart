@@ -82,7 +82,7 @@ class _MoneyTreesState extends State<MoneyTrees> {
       body: new PageView(
         children: [
           new Home(title: "Home"),
-          new Tree("Tree screen"),
+          new Tree(title: "Tree"),
           new FriendsPage(),
         ],
         onPageChanged: onPageChanged,
