@@ -49,7 +49,7 @@ class _MyTreePageState extends State<Tree> {
     else if (numTrees <= 10){
       root += '3';
     }
-    else if (numTrees <= 15){
+    else {
       root += '4';
     }
     root += '.flr';

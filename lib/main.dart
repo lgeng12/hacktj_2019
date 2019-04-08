@@ -191,6 +191,10 @@ class _MoneyTreesState extends State<MoneyTrees> {
 
     // update numTrees
     newInfo.numTrees += newInfo.balance ~/ 10;
+    if (newInfo.numTrees < 0)
+      newInfo.numTrees = 0;
+    if (newInfo.numTrees > 20)
+      newInfo.numTrees = 20;
     newInfo.amountSpent = 0.0;
     newInfo.balance = 30;
     writeJson(json.encode(newInfo));

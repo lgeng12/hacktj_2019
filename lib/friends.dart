@@ -30,11 +30,43 @@ class FriendsPage extends StatefulWidget {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
-  var asset = "assets/tree.nima";
+  var asset = "";
 
   final List<Friend> _friends = new List<Friend>();
   final Set<String> _friendNames = new Set<String>(); // avoid duplicates, bad
   var rng = new Random();
+
+  String condition(Friend f){
+    int treeCondition = f.treeCondition;
+    int numTrees = f.numTrees;
+    String root = "assets/";
+    if (treeCondition == 0){
+      root += 'stump';
+    }
+    if (treeCondition == 1){
+      root += 'dead';
+    }
+    if (treeCondition == 2){
+      root += 'unhealthy';
+    }
+    if (treeCondition == 3){
+      root += 'healthy';
+    }
+    if (numTrees <= 1){
+      root += '1';
+    }
+    else if (numTrees <= 5){
+      root += '2';
+    }
+    else if (numTrees <= 10){
+      root += '3';
+    }
+    else {
+      root += '4';
+    }
+    root += '.flr';
+    return root;
+  }
 
   @override
   // friend list page
@@ -121,6 +153,7 @@ class _FriendsPageState extends State<FriendsPage> {
   }
 
   void _pushToView(Friend f) {
+    this.asset = condition(f);
     Navigator.of(context).push(
       new MaterialPageRoute<void>(
           builder: (BuildContext context) {
@@ -143,7 +176,7 @@ class _FriendsPageState extends State<FriendsPage> {
                         maxHeight: 300,
                         maxWidth: 300,
                         child: Center(
-                          child: NimaActor(this.asset, alignment:Alignment.center, fit:BoxFit.contain, animation:"Idle"),
+                          child: FlareActor(this.asset, alignment:Alignment.center, fit:BoxFit.cover, animation: 'Untitled'),
                         ),
                       ),
                     ),
